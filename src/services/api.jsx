@@ -7,9 +7,11 @@ const api = axios.create({
   timeout: 30000, // 30 seconds timeout
 });
 
-export const summarizePrescription = async (file) => {
+export const summarizePrescription = async (file, options = {}) => {
   const formData = new FormData();
-  formData.append('prescription', file);
+  formData.append('document', file);
+  if (options.documentType) formData.append('documentType', options.documentType);
+  if (options.language) formData.append('language', options.language);
 
   try {
     const response = await api.post('/summarize', formData, {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 const Header = () => {
   return (
@@ -9,8 +10,12 @@ const Header = () => {
             <h1 className="text-2xl font-bold text-gray-900">MediHelp</h1>
           </div>
           <nav className="flex space-x-4">
-            <a href="/" className="text-gray-600 hover:text-gray-900">Home</a>
-            <a href="/about" className="text-gray-600 hover:text-gray-900">About</a>
+            <NavLink to="/" className={({isActive}) => `text-gray-600 hover:text-gray-900 ${isActive ? 'font-semibold text-gray-900' : ''}`}>Home</NavLink>
+            <NavLink to="/summarize" className={({isActive}) => `text-gray-600 hover:text-gray-900 ${isActive ? 'font-semibold text-gray-900' : ''}`}>Summarize</NavLink>
+            <NavLink to="/upload" className={({isActive}) => `text-gray-600 hover:text-gray-900 ${isActive ? 'font-semibold text-gray-900' : ''}`}>Upload</NavLink>
+            <NavLink to="/history" className={({isActive}) => `text-gray-600 hover:text-gray-900 ${isActive ? 'font-semibold text-gray-900' : ''}`}>History</NavLink>
+            <NavLink to="/about" className={({isActive}) => `text-gray-600 hover:text-gray-900 ${isActive ? 'font-semibold text-gray-900' : ''}`}>About</NavLink>
+            <NavLink to="/help" className={({isActive}) => `text-gray-600 hover:text-gray-900 ${isActive ? 'font-semibold text-gray-900' : ''}`}>Help</NavLink>
           </nav>
         </div>
       </div>

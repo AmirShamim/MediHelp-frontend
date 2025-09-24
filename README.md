@@ -1,13 +1,38 @@
-# React + Vite
+# MediHelp Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+MediHelp is a medical document assistant that summarizes prescriptions and health reports into patient-friendly guidance, with multi-language support.
 
-Currently, two official plugins are available:
+## Development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Prerequisites: Node 18+
 
-## Expanding the ESLint configuration
+Install dependencies and run the dev server:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-# MediHelp-frontend
+```pwsh
+cd "frontend/MediHelp"
+npm install
+npm run dev
+```
+
+Open the URL printed by Vite (usually `http://localhost:5173`).
+
+## Pages & Routes
+
+- `/` Home: Landing page with app overview and calls-to-action.
+- `/summarize`: Upload a prescription or health report, choose document type and language, and generate a summary.
+- `/history`: Local history of recent summaries (stored in browser `localStorage`).
+- `/about`: About the app.
+- `/help`: How it works and tips.
+
+## API
+The frontend calls the backend at `VITE_API_URL` (default `http://localhost:5000/api`).
+
+Endpoint used: `POST /api/summarize`
+
+Form fields:
+- `document` (file) – image or PDF
+- `documentType` (string) – `prescription` or `healthReport`
+- `language` (string) – e.g., `en`, `hi`, `ta`
+
+## Styling
+Tailwind CSS via the Vite plugin. Additional small utility classes are defined in `src/index.css`.

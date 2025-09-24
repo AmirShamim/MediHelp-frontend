@@ -1,85 +1,34 @@
-import React, { useState } from 'react';
-import Header from '../components/common/Header';
-import Footer from '../components/common/Footer';
-import ImageUpload from '../components/upload/ImageUpload';
-import SummaryCard from '../components/results/SummaryCard';
-import Loading from '../components/common/Loading';
-import { summarizePrescription } from '../services/api';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [summary, setSummary] = useState(null);
-  const [error, setError] = useState(null);
-
-  const handleFileSelect = (file) => {
-    setSelectedFile(file);
-    setError(null);
-    setSummary(null);
-  };
-
-  const handleSummarize = async () => {
-    if (!selectedFile) return;
-
-    setIsProcessing(true);
-    setError(null);
-
-    try {
-      const result = await summarizePrescription(selectedFile);
-      setSummary(result.summary);
-    } catch (err) {
-      setError(err.message || 'Failed to process prescription');
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Header />
-      
-      <main className="flex-1 py-8">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              AI Prescription Summarizer
-            </h2>
-            <p className="text-xl text-gray-600">
-              Upload your prescription and get a clear, patient-friendly summary
-            </p>
-          </div>
-
-          <div className="space-y-8">
-            <ImageUpload 
-              onFileSelect={handleFileSelect} 
-              isProcessing={isProcessing}
-            />
-
-            {selectedFile && !isProcessing && !summary && (
-              <div className="text-center">
-                <button
-                  onClick={handleSummarize}
-                  className="btn-primary"
-                >
-                  Summarize Prescription
-                </button>
-              </div>
-            )}
-
-            {isProcessing && <Loading />}
-
-            {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                <p className="text-red-700">{error}</p>
-              </div>
-            )}
-
-            {summary && <SummaryCard summary={summary} />}
-          </div>
+    <div className="">
+      <section className="text-center py-12">
+        <h2 className="text-4xl font-bold text-gray-900 mb-4">MediHelp</h2>
+        <p className="text-lg text-gray-600 mb-6">
+          AI-powered summaries for prescriptions and health reports, in your language.
+        </p>
+        <div className="flex justify-center gap-4">
+          <Link to="/summarize" className="btn-primary">Summarize Now</Link>
+          <Link to="/help" className="btn-secondary">How it works</Link>
         </div>
-      </main>
+      </section>
 
-      <Footer />
+  <section className="grid md:grid-cols-3 gap-6 mt-8">
+        <div className="bg-white border rounded-lg p-6 shadow-sm">
+          <h3 className="text-xl font-semibold mb-2">Prescription Summary</h3>
+          <p className="text-gray-600">Upload a prescription and get a clear, patient-friendly summary with dosage and frequency.</p>
+        </div>
+        <div className="bg-white border rounded-lg p-6 shadow-sm">
+          <h3 className="text-xl font-semibold mb-2">Health Report Insights</h3>
+          <p className="text-gray-600">Get key highlights from lab reports with normal ranges and flagged values explained.</p>
+        </div>
+        <div className="bg-white border rounded-lg p-6 shadow-sm">
+          <h3 className="text-xl font-semibold mb-2">Multi-language Support</h3>
+          <p className="text-gray-600">Receive summaries in your preferred language for better understanding.</p>
+        </div>
+      </section>
     </div>
   );
 };
