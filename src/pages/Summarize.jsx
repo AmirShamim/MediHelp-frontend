@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import ImageUpload from '../components/upload/ImageUpload';
 import SummaryCard from '../components/results/SummaryCard';
 import Loading from '../components/common/Loading';
+import Modal from '../components/common/Modal';
+import { Link } from 'react-router-dom';
 import { summarizePrescription } from '../services/api';
-import { getDemoSummaryByType, sampleRecentItems } from '../utils/mockData';
+import { getDemoSummaryByType, sampleRecentItems, generateRandomPrescriptionSummary, generateRandomHealthReportSummary } from '../utils/mockData';
 
 const Summarize = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -14,7 +16,10 @@ const Summarize = () => {
   const [docType, setDocType] = useState('prescription');
   const [language, setLanguage] = useState('en');
   const [recent, setRecent] = useState([]);
-  const [demoMode, setDemoMode] = useState(true); // demo mode on initially so UI not empty
+  const [demoMode, setDemoMode] = useState(true); // demo on initially
+  const [showModal, setShowModal] = useState(false);
+  const [modalSummary, setModalSummary] = useState(null);
+  const [showResult, setShowResult] = useState(false); // collapsed by default
 
   useEffect(() => {
     try {
@@ -25,51 +30,117 @@ const Summarize = () => {
     }
   }, []);
 
+  // Create preview URL whenever selectedFile changes (supports images and PDFs)
+  useEffect(() => {
+    if (!selectedFile) {
+      setPreviewUrl(null);
+      return;
+    }
+
+    // If selectedFile is a File or has a type
+    const isImage = selectedFile.type && selectedFile.type.startsWith('image/');
+    const isPDF = selectedFile.type === 'application/pdf' || (selectedFile.name && selectedFile.name.toLowerCase().endsWith('.pdf'));
+
+    if (isImage || isPDF) {
+      const url = URL.createObjectURL(selectedFile);
+      setPreviewUrl(url);
+      return () => {
+        URL.revokeObjectURL(url);
+        setPreviewUrl(null);
+      };
+    }
+
+    // fallback: no preview
+    setPreviewUrl(null);
+    return undefined;
+  }, [selectedFile]);
+
   const handleFileSelect = (file) => {
+    // keep this helper for any components that expect it
     setSelectedFile(file);
     setError(null);
     setSummary(null);
-    if (file && file.type && file.type.startsWith('image/')) {
-      const url = URL.createObjectURL(file);
-      setPreviewUrl(url);
-    } else {
-      setPreviewUrl(null);
-    }
   };
 
-  useEffect(() => {
-    return () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-    };
-  }, [previewUrl]);
+  useEffect(() => () => { if (previewUrl) URL.revokeObjectURL(previewUrl); }, [previewUrl]);
 
+  const saveHistoryItem = (item) => {
+    const existing = JSON.parse(localStorage.getItem('medihelp_history') || '[]');
+    existing.unshift(item);
+    const trimmed = existing.slice(0, 50);
+    localStorage.setItem('medihelp_history', JSON.stringify(trimmed));
+    setRecent(trimmed.slice(0, 5));
+  };
+
+  // Simulated processing: always take at least 2 seconds
   const handleSummarize = async () => {
+    if (!selectedFile && demoMode) {
+      // If no file but demoMode: still simulate a random generation
+      simulateRandomSummary();
+      return;
+    }
     if (!selectedFile) return;
     setIsProcessing(true);
     setError(null);
+    const start = Date.now();
     try {
-      const result = await summarizePrescription(selectedFile, { documentType: docType, language });
-      setSummary(result.summary);
-      // Save to local history
+      let resultSummary = null;
+      try {
+        const result = await summarizePrescription(selectedFile, { documentType: docType, language });
+        resultSummary = result.summary;
+      } catch (apiErr) {
+        // fallback to random mock if API fails in demo mode
+        if (demoMode) {
+          resultSummary = docType === 'healthReport' ? generateRandomHealthReportSummary() : generateRandomPrescriptionSummary();
+        } else throw apiErr;
+      }
+      const elapsed = Date.now() - start;
+      const remaining = 2000 - elapsed; // enforce 2s
+      if (remaining > 0) await new Promise(r => setTimeout(r, remaining));
+
+      setSummary(resultSummary);
+      setShowResult(true);
       const item = {
         id: Date.now(),
-        fileName: selectedFile.name,
+        fileName: selectedFile ? (selectedFile.name || 'document') : 'demo_document',
         docType,
         language,
-        summary: result.summary,
+        summary: resultSummary,
         createdAt: new Date().toISOString(),
       };
-      const existing = JSON.parse(localStorage.getItem('medihelp_history') || '[]');
-      existing.unshift(item);
-      const trimmed = existing.slice(0, 50);
-      localStorage.setItem('medihelp_history', JSON.stringify(trimmed));
-      setRecent(trimmed.slice(0, 5));
-      setDemoMode(false); // switch off demo once we have a real summary
+      saveHistoryItem(item);
+      setModalSummary(resultSummary);
+      setShowModal(true);
+      setDemoMode(false);
     } catch (err) {
       setError(err.message || 'Failed to process document');
     } finally {
       setIsProcessing(false);
     }
+  };
+
+  const simulateRandomSummary = async () => {
+    setIsProcessing(true);
+    setError(null);
+    const start = Date.now();
+    const randomSummary = docType === 'healthReport' ? generateRandomHealthReportSummary() : generateRandomPrescriptionSummary();
+    const elapsed = Date.now() - start;
+    const remaining = 2000 - elapsed;
+    if (remaining > 0) await new Promise(r => setTimeout(r, remaining));
+    setSummary(randomSummary);
+    setShowResult(true);
+    const item = {
+      id: Date.now(),
+      fileName: 'demo_document',
+      docType,
+      language,
+      summary: randomSummary,
+      createdAt: new Date().toISOString(),
+    };
+    saveHistoryItem(item);
+    setModalSummary(randomSummary);
+    setShowModal(true);
+    setIsProcessing(false);
   };
 
   // Provide demo summary if in demo mode and no real summary yet
@@ -99,45 +170,45 @@ const Summarize = () => {
             <ImageUpload onFileSelect={handleFileSelect} isProcessing={isProcessing} />
           </div>
 
-            <div className="bg-white border rounded-lg p-4 flex flex-col gap-3">
-              <div className="flex flex-wrap items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <label className="text-sm text-gray-700">Document type</label>
-                  <select aria-label="Document type" value={docType} onChange={(e) => setDocType(e.target.value)} className="border rounded px-3 py-2">
-                    <option value="prescription">Prescription</option>
-                    <option value="healthReport">Health Report</option>
-                  </select>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <label className="text-sm text-gray-700">Language</label>
-                  <select aria-label="Language" value={language} onChange={(e) => setLanguage(e.target.value)} className="border rounded px-3 py-2">
-                    <option value="en">English</option>
-                    <option value="hi">Hindi</option>
-                    <option value="ta">Tamil</option>
-                    <option value="te">Telugu</option>
-                    <option value="bn">Bengali</option>
-                  </select>
-                </div>
-
-                <div className="ml-auto flex gap-2">
-                  <button onClick={handleSummarize} disabled={!selectedFile || isProcessing} className="btn-primary whitespace-nowrap" aria-disabled={!selectedFile || isProcessing}>
-                    {isProcessing ? 'Processing...' : 'Summarize'}
-                  </button>
-                  {summary && (
-                    <button onClick={()=>{setSummary(null); setSelectedFile(null); setPreviewUrl(null);}} className="btn-secondary text-sm whitespace-nowrap">Clear</button>
-                  )}
-                </div>
+          <div className="bg-white border rounded-lg p-4 flex flex-col gap-3">
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="flex items-center gap-2">
+                <label className="text-sm text-gray-700">Document type</label>
+                <select aria-label="Document type" value={docType} onChange={(e) => setDocType(e.target.value)} className="border rounded px-3 py-2">
+                  <option value="prescription">Prescription</option>
+                  <option value="healthReport">Health Report</option>
+                </select>
               </div>
 
-              <p className="text-sm text-gray-500">Tips: Use well-lit images, avoid blur, prefer PDFs for lab reports. Max file size: 5MB.</p>
-              {error && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                  <p className="text-red-700">{error}</p>
-                </div>
-              )}
-              {isProcessing && <Loading />}
+              <div className="flex items-center gap-2">
+                <label className="text-sm text-gray-700">Language</label>
+                <select aria-label="Language" value={language} onChange={(e) => setLanguage(e.target.value)} className="border rounded px-3 py-2">
+                  <option value="en">English</option>
+                  <option value="hi">Hindi</option>
+                  <option value="ta">Tamil</option>
+                  <option value="te">Telugu</option>
+                  <option value="bn">Bengali</option>
+                </select>
+              </div>
+
+              <div className="ml-auto flex gap-2">
+                <button onClick={handleSummarize} disabled={isProcessing || (!selectedFile && !demoMode)} className="btn-primary whitespace-nowrap" aria-disabled={isProcessing || (!selectedFile && !demoMode)}>
+                  {isProcessing ? 'Processing...' : 'Summarize'}
+                </button>
+                {summary && (
+                  <button onClick={()=>{setSummary(null); setSelectedFile(null); setPreviewUrl(null); setShowResult(false);}} className="btn-secondary text-sm whitespace-nowrap">Clear</button>
+                )}
+              </div>
             </div>
+
+            <p className="text-sm text-gray-500">Tips: Use well-lit images, avoid blur, prefer PDFs for lab reports. Max file size: 5MB.</p>
+            {error && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                <p className="text-red-700">{error}</p>
+              </div>
+            )}
+            {isProcessing && <Loading />}
+          </div>
         </div>
 
         {/* Right column: preview / summary / recent */}
@@ -145,7 +216,15 @@ const Summarize = () => {
           <div className="bg-white border rounded-lg p-3">
             <h3 className="text-sm font-semibold mb-2">Preview</h3>
             {previewUrl ? (
-              <img src={previewUrl} alt="Upload preview" className="w-full h-auto rounded" />
+              // Show image preview or PDF embed depending on file type
+              (selectedFile && selectedFile.type && selectedFile.type.startsWith('image/')) ? (
+                <img src={previewUrl} alt="Upload preview" className="w-full h-auto rounded" />
+              ) : (
+                // Treat as PDF if previewUrl exists but not image
+                <div className="w-full h-48 overflow-hidden rounded">
+                  <embed src={previewUrl} type="application/pdf" width="100%" height="100%" />
+                </div>
+              )
             ) : selectedFile ? (
               <p className="text-sm text-gray-600">Uploaded file: {selectedFile.name}</p>
             ) : (
@@ -154,11 +233,25 @@ const Summarize = () => {
           </div>
 
           <div className="bg-white border rounded-lg p-3">
-            <h3 className="text-sm font-semibold mb-2 flex items-center justify-between">Result {demoMode && !summary && <span className="text-[10px] font-normal text-gray-500 bg-gray-100 px-2 py-0.5 rounded">Demo</span>}</h3>
-            {effectiveSummary ? (
-              <SummaryCard summary={effectiveSummary} docType={docType} />
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-sm font-semibold">Result {demoMode && !summary && <span className="text-[10px] font-normal text-gray-500 bg-gray-100 px-2 py-0.5 rounded ml-2">Demo</span>}</h3>
+              <div className="flex items-center gap-2">
+                <button onClick={() => setShowResult(s => !s)} className="text-xs btn-secondary px-2 py-1">
+                  {showResult ? 'Collapse' : 'Open'}
+                </button>
+              </div>
+            </div>
+
+            {showResult ? (
+              effectiveSummary ? (
+                <SummaryCard summary={effectiveSummary} docType={docType} />
+              ) : (
+                <p className="text-sm text-gray-500">Summary will appear here after processing.</p>
+              )
             ) : (
-              <p className="text-sm text-gray-500">Summary will appear here after processing.</p>
+              <div className="text-sm text-gray-500 py-4">
+                <p>Result is hidden. Click "Open" to view the summary after generation.</p>
+              </div>
             )}
           </div>
 
@@ -171,7 +264,8 @@ const Summarize = () => {
                 {effectiveRecent.map(r => (
                   <li key={r.id} className="border rounded px-2 py-1 bg-gray-50">
                     <div className="font-medium truncate" title={r.fileName}>{r.fileName}</div>
-                    <div className="text-xs text-gray-500">{new Date(r.createdAt).toLocaleString()}</div>
+                    <div className="text-xs text-gray-500 mb-1">{new Date(r.createdAt).toLocaleString()}</div>
+                    <Link to={`/result/${r.id}`} className="text-xs text-blue-600 hover:underline">View full report →</Link>
                   </li>
                 ))}
               </ul>
@@ -179,6 +273,16 @@ const Summarize = () => {
           </div>
         </aside>
       </div>
+
+      <Modal open={showModal} onClose={()=>setShowModal(false)} title="Generated Summary" footer={
+        <>
+          <button onClick={()=>setShowModal(false)} className="btn-secondary text-sm">Close</button>
+          <Link to={recent[0] ? `/result/${recent[0].id}` : '#'} className="btn-primary text-sm">Open Full Page</Link>
+        </>
+      }>
+        <p className="text-sm text-gray-500">This summary was generated {demoMode ? 'using mock data' : 'from your document'}.</p>
+        <SummaryCard summary={modalSummary} docType={docType} />
+      </Modal>
     </div>
   );
 };

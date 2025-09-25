@@ -38,3 +38,50 @@ export const sampleRecentItems = [
 export const getDemoSummaryByType = (type) => {
   return type === 'healthReport' ? sampleHealthReportSummary : samplePrescriptionSummary;
 };
+
+// New random generators
+const rand = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+export const generateRandomPrescriptionSummary = () => {
+  const drugNames = ['Paracetamol 650mg', 'Ibuprofen 400mg', 'Metformin 500mg', 'Atorvastatin 20mg', 'Omeprazole 20mg'];
+  const frequencies = ['Once daily', 'Twice daily', 'Three times daily', 'Every 6 hours', 'At bedtime'];
+  const durations = ['3 days', '5 days', '7 days', '10 days', '2 weeks'];
+  const instructions = [
+    'Take with a glass of water after meals.',
+    'Do not take on an empty stomach.',
+    'Avoid alcohol while on this medication.',
+    'Take at the same time each day for best results.',
+    'Swallow whole, do not crush or chew.'
+  ];
+  const warnings = [
+    'Stop use if rash or swelling develops.',
+    'May cause mild dizziness.',
+    'Monitor blood sugar if diabetic.',
+    'Contact doctor if pain persists beyond 5 days.',
+    null
+  ];
+  return {
+    drugName: rand(drugNames),
+    dosage: rand(['1 tablet', '2 tablets', '5 mL', '10 mL', '1 capsule']),
+    frequency: rand(frequencies),
+    duration: rand(durations),
+    instructions: rand(instructions),
+    warnings: rand(warnings) || undefined
+  };
+};
+
+export const generateRandomHealthReportSummary = () => {
+  const issues = [
+    { abn: 'Mild anemia (Hemoglobin slightly low)', rec: 'Increase iron-rich foods, consider supplementation.' },
+    { abn: 'Elevated fasting glucose (Prediabetic range)', rec: 'Reduce refined carbs, add daily 30 min brisk walk.' },
+    { abn: 'Low Vitamin B12', rec: 'Add B12 supplementation or fortified foods, recheck in 2 months.' },
+    { abn: 'Borderline thyroid function (TSH mildly elevated)', rec: 'Monitor in 6–8 weeks; watch for fatigue or weight changes.' },
+    { abn: 'Slightly elevated liver enzymes', rec: 'Avoid alcohol, reduce fatty foods, re-evaluate in 3 months.' }
+  ];
+  const pick = rand(issues);
+  return {
+    summary: `Routine panel shows ${pick.abn.toLowerCase()} with other values within acceptable limits.`,
+    abnormalities: `- ${pick.abn}`,
+    recommendations: pick.rec
+  };
+};
