@@ -1,7 +1,20 @@
 import React from 'react';
 import { AlertTriangle, Pill, FileText } from 'lucide-react';
 
+// A lightweight skeleton line component
+const Line = ({ w = 'w-full' }) => <div className={`h-3 rounded bg-gray-200 animate-pulse ${w}`}></div>;
+
 const SummaryCard = ({ summary, docType = 'prescription' }) => {
+  if (!summary) {
+    return (
+      <div className="space-y-2">
+        <Line w="w-3/4" />
+        <Line w="w-1/2" />
+        <Line w="w-2/3" />
+      </div>
+    );
+  }
+
   const isHealthReport = docType === 'healthReport' || (!!summary && (summary.abnormalities || summary.recommendations));
 
   if (isHealthReport) {
@@ -50,22 +63,22 @@ const SummaryCard = ({ summary, docType = 'prescription' }) => {
           <Pill className="h-6 w-6 text-primary mr-2" />
           <h3 className="text-lg font-semibold">Medication Details</h3>
         </div>
-        <div className="space-y-3">
-          <div>
+        <div className="space-y-3 text-sm">
+          <div className="flex flex-wrap gap-x-2">
             <span className="font-medium">Drug Name:</span>
-            <span className="ml-2">{summary.drugName || 'Not specified'}</span>
+            <span>{summary.drugName || <span className="italic text-gray-400">Not specified</span>}</span>
           </div>
-          <div>
+          <div className="flex flex-wrap gap-x-2">
             <span className="font-medium">Dosage:</span>
-            <span className="ml-2">{summary.dosage || 'Not specified'}</span>
+            <span>{summary.dosage || <span className="italic text-gray-400">Not specified</span>}</span>
           </div>
-          <div>
+          <div className="flex flex-wrap gap-x-2">
             <span className="font-medium">Frequency:</span>
-            <span className="ml-2">{summary.frequency || 'Not specified'}</span>
+            <span>{summary.frequency || <span className="italic text-gray-400">Not specified</span>}</span>
           </div>
-          <div>
+          <div className="flex flex-wrap gap-x-2">
             <span className="font-medium">Duration:</span>
-            <span className="ml-2">{summary.duration || 'Not specified'}</span>
+            <span>{summary.duration || <span className="italic text-gray-400">Not specified</span>}</span>
           </div>
         </div>
       </div>
@@ -75,7 +88,7 @@ const SummaryCard = ({ summary, docType = 'prescription' }) => {
           <FileText className="h-6 w-6 text-secondary mr-2" />
           <h3 className="text-lg font-semibold">Instructions</h3>
         </div>
-        <p className="text-gray-700">{summary.instructions || 'No specific instructions provided.'}</p>
+        <p className="text-gray-700 text-sm leading-relaxed">{summary.instructions || 'No specific instructions provided.'}</p>
       </div>
 
       {summary.warnings && (
@@ -84,7 +97,7 @@ const SummaryCard = ({ summary, docType = 'prescription' }) => {
             <AlertTriangle className="h-6 w-6 text-orange-600 mr-2" />
             <h3 className="text-lg font-semibold text-orange-800">Important Warnings</h3>
           </div>
-          <p className="text-orange-700">{summary.warnings}</p>
+          <p className="text-orange-700 text-sm">{summary.warnings}</p>
         </div>
       )}
 
