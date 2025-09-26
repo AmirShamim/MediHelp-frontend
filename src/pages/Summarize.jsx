@@ -154,8 +154,8 @@ const Summarize = () => {
         <p className="text-gray-600 max-w-2xl mx-auto">Upload a prescription or health report and receive a clear, patient-friendly summary. Demo data is shown to illustrate output.</p>
       </div>
 
-      <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
-        <div className="flex items-center gap-2 text-sm bg-white border rounded px-3 py-2 w-fit">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4 animate-fade-slide">
+        <div className="flex items-center gap-2 text-sm glass rounded px-3 py-2 w-fit interactive-panel">
           <input id="demo-toggle" type="checkbox" className="cursor-pointer" checked={demoMode} onChange={(e)=>setDemoMode(e.target.checked)} />
           <label htmlFor="demo-toggle" className="cursor-pointer select-none">Show demo content</label>
         </div>
@@ -164,13 +164,13 @@ const Summarize = () => {
 
       <div className="grid md:grid-cols-3 gap-6 items-start">
         {/* Left column: upload and controls */}
-        <div className="md:col-span-2 space-y-4 order-2 md:order-1">
-          <div className="bg-white border rounded-lg p-4">
+        <div className="md:col-span-2 space-y-4 order-2 md:order-1 stagger-children">
+          <div className="glass rounded-lg p-4 interactive-panel">
             <label className="block text-sm font-medium text-gray-700 mb-2">Upload document</label>
             <ImageUpload onFileSelect={handleFileSelect} isProcessing={isProcessing} />
           </div>
 
-          <div className="bg-white border rounded-lg p-4 flex flex-col gap-3">
+          <div className="glass rounded-lg p-4 flex flex-col gap-3 interactive-panel">
             <div className="flex flex-wrap items-center gap-4">
               <div className="flex items-center gap-2">
                 <label className="text-sm text-gray-700">Document type</label>
@@ -212,8 +212,8 @@ const Summarize = () => {
         </div>
 
         {/* Right column: preview / summary / recent */}
-        <aside className="md:col-span-1 space-y-4 order-1 md:order-2">
-          <div className="bg-white border rounded-lg p-3">
+        <aside className="md:col-span-1 space-y-4 order-1 md:order-2 stagger-children">
+          <div className="glass rounded-lg p-3 interactive-panel">
             <h3 className="text-sm font-semibold mb-2">Preview</h3>
             {previewUrl ? (
               // Show image preview or PDF embed depending on file type
@@ -232,7 +232,7 @@ const Summarize = () => {
             )}
           </div>
 
-          <div className="bg-white border rounded-lg p-3">
+          <div className="glass rounded-lg p-3 interactive-panel">
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-sm font-semibold">Result {demoMode && !summary && <span className="text-[10px] font-normal text-gray-500 bg-gray-100 px-2 py-0.5 rounded ml-2">Demo</span>}</h3>
               <div className="flex items-center gap-2">
@@ -255,14 +255,14 @@ const Summarize = () => {
             )}
           </div>
 
-          <div className="bg-white border rounded-lg p-3">
+          <div className="glass rounded-lg p-3 interactive-panel">
             <h3 className="text-sm font-semibold mb-2 flex items-center justify-between">Recent {demoMode && effectiveRecent === sampleRecentItems && <span className="text-[10px] font-normal text-gray-500 bg-gray-100 px-2 py-0.5 rounded">Demo</span>}</h3>
             {effectiveRecent.length === 0 ? (
               <p className="text-sm text-gray-500">No recent summaries</p>
             ) : (
               <ul className="space-y-2 text-sm">
                 {effectiveRecent.map(r => (
-                  <li key={r.id} className="border rounded px-2 py-1 bg-gray-50">
+                  <li key={r.id} className="glass rounded px-2 py-1 interactive-panel">
                     <div className="font-medium truncate" title={r.fileName}>{r.fileName}</div>
                     <div className="text-xs text-gray-500 mb-1">{new Date(r.createdAt).toLocaleString()}</div>
                     <Link to={`/result/${r.id}`} className="text-xs text-blue-600 hover:underline">View full report →</Link>

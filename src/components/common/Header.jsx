@@ -17,7 +17,7 @@ const Header = () => {
   ];
 
   return (
-    <header className="bg-white/95 backdrop-blur border-b sticky top-0 z-30 shadow-sm">
+  <header className="glass-header sticky top-0 z-30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center gap-6">
@@ -43,7 +43,7 @@ const Header = () => {
       </div>
       {/* Mobile panel */}
       {open && (
-        <div className="md:hidden border-t bg-white shadow-sm">
+        <div className="md:hidden glass border-t border-white/40">
           <div className="px-2 py-2 space-y-1">
             {links.map(l => (
               <NavLink

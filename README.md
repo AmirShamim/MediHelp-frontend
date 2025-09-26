@@ -36,3 +36,6 @@ Form fields:
 
 ## Styling
 Tailwind CSS via the Vite plugin. Additional small utility classes are defined in `src/index.css`.
+
+
+Main background colors light shade of blue
