@@ -45,13 +45,14 @@ const Home = () => {
 				</div>
 				<div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
 					{featureItems.map(({ icon: Icon, title, desc }) => (
-						<div key={title} className="group glass interactive-panel rounded-xl p-5 flex flex-col">
-							<div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4 bg-brand-fade text-brand group-hover:bg-brand group-hover:text-white transition-colors">
+						<article key={title} className="feature-card group flex flex-col select-none" aria-labelledby={`feat-${title.replace(/\s+/g,'-')}`}> 
+							<div className="feature-icon mb-5" aria-hidden="true">
 								<Icon className="h-5 w-5" />
 							</div>
-							<h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{title}</h3>
-							<p className="text-xs sm:text-sm text-gray-600 leading-relaxed flex-1">{desc}</p>
-						</div>
+							<h3 id={`feat-${title.replace(/\s+/g,'-')}`} className="font-semibold text-gray-900 mb-2">{title}</h3>
+							<p className="text-gray-600 flex-1">{desc}</p>
+							<span className="feature-learn mt-4 inline-flex items-center gap-1" aria-hidden="true">LEARN<span className="block h-[1px] w-4 bg-current"></span></span>
+						</article>
 					))}
 				</div>
 			</section>

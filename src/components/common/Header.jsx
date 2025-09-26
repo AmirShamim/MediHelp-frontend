@@ -24,9 +24,16 @@ const Header = () => {
             <h1 className="text-2xl font-bold text-brand tracking-tight">MediHelp</h1>
           </div>
           {/* Desktop nav */}
-          <nav className="hidden md:flex space-x-1">
+          <nav className="hidden md:flex space-x-1" aria-label="Primary">
             {links.map(l => (
-              <NavLink key={l.to} to={l.to} className={({isActive}) => `${linkBase} ${isActive ? 'text-brand font-semibold' : 'text-gray-600 hover:text-brand'} hover:bg-brand-fade`}>{l.label}</NavLink>
+              <NavLink
+                key={l.to}
+                to={l.to}
+                className={({isActive}) => `${linkBase} ${isActive ? 'text-brand font-semibold' : 'text-gray-600 hover:text-brand'} hover:bg-brand-fade`}
+                aria-current={({ isActive }) => (isActive ? 'page' : undefined)}
+              >
+                {l.label}
+              </NavLink>
             ))}
           </nav>
           {/* Mobile button */}
@@ -43,7 +50,7 @@ const Header = () => {
       </div>
       {/* Mobile panel */}
       {open && (
-        <div className="md:hidden glass border-t border-white/40">
+        <div className="md:hidden glass border-t border-white/40" role="dialog" aria-label="Mobile navigation" aria-modal="true">
           <div className="px-2 py-2 space-y-1">
             {links.map(l => (
               <NavLink
@@ -51,6 +58,7 @@ const Header = () => {
                 to={l.to}
                 onClick={() => setOpen(false)}
                 className={({isActive}) => `${linkBase} ${isActive ? active : inactive}`}
+                aria-current={({ isActive }) => (isActive ? 'page' : undefined)}
               >
                 {l.label}
               </NavLink>

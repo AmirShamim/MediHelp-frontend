@@ -83,19 +83,32 @@ const History = () => {
           <button onClick={()=>{setQuery(''); setTypeFilter('all');}} className="btn-secondary text-sm">Reset Filters</button>
         </div>
       ) : (
-        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3 stagger-children">
+        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3 stagger-children" role="list">
           {filtered.map(item => {
             const snippet = summarizeString(item.summary);
             return (
-              <Link key={item.id} to={`/result/${item.id}`} className="glass rounded-xl p-4 interactive-panel flex flex-col h-full group focus:outline-none focus:ring-2 focus:ring-brand/40">
-                <div className="flex items-start justify-between mb-2 gap-3">
-                  <div className="text-xs font-medium px-2 py-1 rounded-full bg-brand-fade text-brand capitalize tracking-wide">{item.docType === 'healthReport' ? 'Health Report' : 'Prescription'}</div>
-                  <span className="text-[10px] text-gray-500">{new Date(item.createdAt).toLocaleString()}</span>
-                </div>
-                <h3 className="font-semibold text-sm mb-1 truncate" title={item.fileName}>{item.fileName}</h3>
-                <p className="text-xs text-gray-600 leading-relaxed line-clamp-3 flex-1">{snippet}</p>
-                <span className="mt-3 text-[11px] text-brand font-medium inline-flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">Open →</span>
-              </Link>
+              <article key={item.id} role="listitem" className="h-full">
+                <Link
+                  to={`/result/${item.id}`}
+                  aria-label={`Open summary for ${item.fileName}`}
+                  className="glass rounded-xl p-4 interactive-panel flex flex-col h-full group focus:outline-none focus:ring-2 focus:ring-brand/40"
+                >
+                  <div className="flex items-start justify-between mb-2 gap-3">
+                    <div className="text-xs font-medium px-2 py-1 rounded-full bg-brand-fade text-brand capitalize tracking-wide">
+                      {item.docType === 'healthReport' ? 'Health Report' : 'Prescription'}
+                    </div>
+                    <span className="text-[10px] text-gray-500">{new Date(item.createdAt).toLocaleString()}</span>
+                  </div>
+                  <h3 className="font-semibold text-sm mb-1 truncate" title={item.fileName}>{item.fileName}</h3>
+                  <p className="text-xs text-gray-600 leading-relaxed line-clamp-3 flex-1">{snippet}</p>
+                  <span
+                    className="mt-3 text-[11px] text-brand font-medium inline-flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                    aria-hidden="true"
+                  >
+                    Open →
+                  </span>
+                </Link>
+              </article>
             );
           })}
         </div>

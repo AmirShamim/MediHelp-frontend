@@ -154,7 +154,7 @@ const Summarize = () => {
         <p className="text-gray-600 max-w-2xl mx-auto">Upload a prescription or health report and receive a clear, patient-friendly summary. Demo data is shown to illustrate output.</p>
       </div>
 
-      <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4 animate-fade-slide">
+  <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4 animate-fade-slide" aria-live="polite">
         <div className="flex items-center gap-2 text-sm glass rounded px-3 py-2 w-fit interactive-panel">
           <input id="demo-toggle" type="checkbox" className="cursor-pointer" checked={demoMode} onChange={(e)=>setDemoMode(e.target.checked)} />
           <label htmlFor="demo-toggle" className="cursor-pointer select-none">Show demo content</label>
@@ -192,7 +192,7 @@ const Summarize = () => {
               </div>
 
               <div className="ml-auto flex gap-2">
-                <button onClick={handleSummarize} disabled={isProcessing || (!selectedFile && !demoMode)} className="btn-primary whitespace-nowrap" aria-disabled={isProcessing || (!selectedFile && !demoMode)}>
+                <button onClick={handleSummarize} disabled={isProcessing || (!selectedFile && !demoMode)} className="btn-primary whitespace-nowrap" aria-disabled={isProcessing || (!selectedFile && !demoMode)} aria-busy={isProcessing}>
                   {isProcessing ? 'Processing...' : 'Summarize'}
                 </button>
                 {summary && (
@@ -203,11 +203,11 @@ const Summarize = () => {
 
             <p className="text-sm text-gray-500">Tips: Use well-lit images, avoid blur, prefer PDFs for lab reports. Max file size: 5MB.</p>
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-3" role="alert">
                 <p className="text-red-700">{error}</p>
               </div>
             )}
-            {isProcessing && <Loading />}
+            {isProcessing && <div aria-live="assertive"><Loading /></div>}
           </div>
         </div>
 
@@ -236,7 +236,12 @@ const Summarize = () => {
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-sm font-semibold">Result {demoMode && !summary && <span className="text-[10px] font-normal text-gray-500 bg-gray-100 px-2 py-0.5 rounded ml-2">Demo</span>}</h3>
               <div className="flex items-center gap-2">
-                <button onClick={() => setShowResult(s => !s)} className="text-xs btn-secondary px-2 py-1">
+                <button
+                  onClick={() => setShowResult(s => !s)}
+                  className="text-xs btn-secondary px-2 py-1"
+                  aria-expanded={showResult}
+                  aria-controls="summary-panel"
+                >
                   {showResult ? 'Collapse' : 'Open'}
                 </button>
               </div>
@@ -244,7 +249,7 @@ const Summarize = () => {
 
             {showResult ? (
               effectiveSummary ? (
-                <SummaryCard summary={effectiveSummary} docType={docType} />
+                <div id="summary-panel"><SummaryCard summary={effectiveSummary} docType={docType} /></div>
               ) : (
                 <p className="text-sm text-gray-500">Summary will appear here after processing.</p>
               )
