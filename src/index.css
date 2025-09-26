@@ -1,43 +1,82 @@
 @import "tailwindcss";
 
-/* Utility buttons without @apply to avoid tooling errors */
+:root {
+	/* Primary palette (from provided swatch) */
+	--color-primary-900: #00095A; /* deep navy approximation */
+	--color-primary-700: #005da3; /* strong ocean blue */
+	--color-primary-600: #007fbe; /* mid blue */
+	--color-primary-500: #00B4D8; /* main brand (given) */
+	--color-primary-300: #8AE3F4; /* light aqua */
+	--color-primary-100: #D8F4FB; /* very light */
+
+	--color-bg-gradient-start: var(--color-primary-900);
+	--color-bg-gradient-mid: var(--color-primary-600);
+	--color-bg-gradient-end: var(--color-primary-500);
+
+	--color-text-dark: #0f172a;
+	--color-text-light: #ffffff;
+}
+
+/* Utility buttons using palette */
 .btn-primary {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	padding: 0.5rem 1rem;
-	border-radius: 0.375rem;
-	background-color: #2563eb; /* blue-600 */
-	color: #ffffff;
-	font-weight: 500;
-	transition: background-color .15s, box-shadow .15s;
+	padding: 0.6rem 1.1rem;
+	border-radius: 0.5rem;
+	background: linear-gradient(135deg,var(--color-primary-700),var(--color-primary-500));
+	color: var(--color-text-light);
+	font-weight: 600;
+	letter-spacing: .25px;
+	transition: background .25s, transform .15s, box-shadow .25s;
+	box-shadow: 0 4px 14px -4px rgba(0,180,216,.35);
 }
-.btn-primary:hover { background-color: #1d4ed8; /* blue-700 */ }
-.btn-primary:disabled { opacity: 0.6; }
-.btn-primary:focus-visible { outline: 2px solid #1d4ed8; outline-offset: 2px; }
+.btn-primary:hover { background: linear-gradient(135deg,var(--color-primary-900),var(--color-primary-600)); }
+.btn-primary:active { transform: translateY(1px); }
+.btn-primary:disabled { opacity: .55; cursor: not-allowed; }
+.btn-primary:focus-visible { outline: 2px solid var(--color-primary-300); outline-offset: 2px; }
 
 .btn-secondary {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	padding: 0.5rem 1rem;
-	border-radius: 0.375rem;
-	background-color: #f3f4f6; /* gray-100 */
-	color: #111827; /* gray-900 */
-	font-weight: 500;
-	transition: background-color .15s, box-shadow .15s;
+	padding: 0.55rem 1.05rem;
+	border-radius: 0.5rem;
+	background: var(--color-primary-100);
+	color: var(--color-primary-700);
+	font-weight: 600;
+	transition: background .2s, color .2s, box-shadow .25s;
+	border: 1px solid var(--color-primary-300);
 }
-.btn-secondary:hover { background-color: #e5e7eb; /* gray-200 */ }
-.btn-secondary:focus-visible { outline: 2px solid #9ca3af; outline-offset: 2px; }
+.btn-secondary:hover { background: var(--color-primary-300); color: var(--color-primary-900); }
+.btn-secondary:focus-visible { outline: 2px solid var(--color-primary-500); outline-offset: 2px; }
 
-/* Simple card component */
+/* Outline variant (optional) */
+.btn-outline {
+	display: inline-flex; align-items: center; justify-content: center;
+	padding: 0.55rem 1.05rem; border-radius: .5rem; font-weight: 600;
+	border: 1px solid var(--color-primary-500); color: var(--color-primary-700);
+	background: #fff; transition: background .2s, color .2s;
+}
+.btn-outline:hover { background: var(--color-primary-100); }
+
+/* Palette helper classes */
+.text-brand { color: var(--color-primary-700); }
+.bg-brand { background-color: var(--color-primary-500); }
+.bg-brand-fade { background-color: var(--color-primary-100); }
+.border-brand { border-color: var(--color-primary-500); }
+.gradient-brand { background: linear-gradient(135deg,var(--color-bg-gradient-start),var(--color-bg-gradient-mid),var(--color-bg-gradient-end)); }
+.badge-brand { background: var(--color-primary-500); color: #fff; }
+
+/* Card component */
 .card {
 	background-color: #ffffff;
 	border: 1px solid #e5e7eb; /* gray-200 */
-	border-radius: 0.5rem; /* rounded-lg */
+	border-radius: 0.75rem; /* slightly larger */
 	padding: 1rem; /* p-4 */
-	box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+	box-shadow: 0 2px 4px rgba(0,0,0,0.04);
 }
+.card-hover:hover { box-shadow: 0 6px 18px -6px rgba(0,89,133,0.25); }
 
 /* Smooth fade-in for main content */
 main { animation: fadeIn .25s ease-in; }
