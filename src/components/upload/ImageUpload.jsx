@@ -36,13 +36,15 @@ const ImageUpload = ({ onFileSelect, isProcessing }) => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full">
       <div
-        className={`relative border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+        className={`relative border-3 border-dashed rounded-2xl p-12 text-center transition-all duration-300 ${
           dragActive
-            ? 'border-primary bg-blue-50'
-            : 'border-gray-300 hover:border-gray-400'
-        } ${isProcessing ? 'opacity-50 pointer-events-none' : ''}`}
+            ? 'border-primary-500 bg-primary-50 shadow-lg scale-[1.02]'
+            : 'border-gray-300 hover:border-primary-400 hover:bg-gray-50'
+        } ${isProcessing ? 'opacity-50 pointer-events-none' : 'cursor-pointer'} ${
+          selectedFile ? 'bg-green-50 border-green-400' : ''
+        }`}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
         onDragOver={handleDrag}
@@ -54,28 +56,78 @@ const ImageUpload = ({ onFileSelect, isProcessing }) => {
           onChange={handleFileInput}
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
           disabled={isProcessing}
+          aria-label="Upload prescription or health report"
         />
         
         <div className="flex flex-col items-center">
-          <Upload className="h-12 w-12 text-gray-400 mb-4" />
-          <p className="text-lg font-medium text-gray-900 mb-2">
-            Upload Prescription Image
+          <div className={`h-20 w-20 rounded-full flex items-center justify-center mb-6 transition-all duration-300 ${
+            dragActive 
+              ? 'bg-primary-500 scale-110' 
+              : selectedFile 
+                ? 'bg-green-500' 
+                : 'bg-gradient-to-br from-primary-400 to-primary-600'
+          } shadow-xl`}>
+            {selectedFile ? (
+              <FileText className="h-10 w-10 text-white" />
+            ) : (
+              <Upload className="h-10 w-10 text-white" />
+            )}
+          </div>
+          
+          <p className="text-xl font-bold text-gray-900 mb-2">
+            {selectedFile ? 'File Selected ✓' : 'Upload Prescription Image'}
           </p>
-          <p className="text-gray-600 mb-4">
-            Drag and drop or click to select
-          </p>
-          <p className="text-sm text-gray-500">
-            Supports JPG, PNG, PDF up to 5MB
-          </p>
+          
+          {!selectedFile && (
+            <>
+              <p className="text-base text-gray-600 mb-6 max-w-sm">
+                Drag and drop your file here, or{' '}
+                <span className="text-primary-600 font-semibold underline">click to browse</span>
+              </p>
+              <div className="flex items-center gap-4 text-sm text-gray-500 bg-white px-4 py-2 rounded-lg border border-gray-200">
+                <div className="flex items-center gap-1">
+                  <Camera className="h-4 w-4" />
+                  <span>JPG, PNG</span>
+                </div>
+                <div className="h-4 w-px bg-gray-300"></div>
+                <div className="flex items-center gap-1">
+                  <FileText className="h-4 w-4" />
+                  <span>PDF</span>
+                </div>
+                <div className="h-4 w-px bg-gray-300"></div>
+                <span>Max 5MB</span>
+              </div>
+            </>
+          )}
         </div>
 
         {selectedFile && (
-          <div className="mt-4 p-3 bg-gray-50 rounded-md">
-            <div className="flex items-center">
-              <FileText className="h-5 w-5 text-primary mr-2" />
-              <span className="text-sm text-gray-700 truncate">
-                {selectedFile.name}
-              </span>
+          <div className="mt-6 p-4 bg-white rounded-xl border-2 border-green-300 shadow-sm">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-lg bg-green-100 flex items-center justify-center">
+                  <FileText className="h-5 w-5 text-green-600" />
+                </div>
+                <div className="text-left">
+                  <p className="text-sm font-semibold text-gray-900 truncate max-w-xs">
+                    {selectedFile.name}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {(selectedFile.size / 1024).toFixed(1)} KB
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedFile(null);
+                  onFileSelect(null);
+                }}
+                className="h-8 w-8 rounded-lg bg-red-100 hover:bg-red-200 flex items-center justify-center transition-colors"
+                aria-label="Remove file"
+              >
+                <span className="text-red-600 text-lg">×</span>
+              </button>
             </div>
           </div>
         )}

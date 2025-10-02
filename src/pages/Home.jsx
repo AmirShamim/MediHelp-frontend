@@ -19,99 +19,146 @@ const steps = [
 
 const Home = () => {
 	return (
-		<div className="space-y-20">
+		<div className="space-y-24">
 			{/* Hero */}
-			<section className="relative overflow-hidden rounded-2xl gradient-brand text-white px-6 py-20 flex flex-col items-center text-center shadow-md animate-fade-slide">
-				<div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_30%_30%,#ffffff55,transparent_60%)]" />
-				<div className="relative max-w-3xl mx-auto">
-					<div className="inline-flex items-center gap-2 text-xs font-medium bg-white/10 backdrop-blur px-3 py-1 rounded-full mb-6 glass border-none">
-						<span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" /> Beta Preview
+			<section className="relative isolate overflow-hidden rounded-3xl bg-white/60 backdrop-blur-sm border border-gray-200 px-6 sm:px-12 pt-28 pb-24 text-center shadow-[0_4px_30px_-10px_rgba(0,0,0,0.1)]">
+				{/* subtle gradient accent bar */}
+				<div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary-500 via-primary-300 to-primary-600" />
+				<div className="max-w-5xl mx-auto">
+					<div className="inline-flex items-center gap-2 text-xs font-medium bg-gradient-to-r from-primary-100 to-primary-50 text-primary-700 px-3 py-1.5 rounded-full mb-10 border border-primary-300/60 shadow-sm">
+						<span className="relative flex items-center justify-center">
+							<span className="h-2 w-2 rounded-full bg-emerald-500" />
+						</span>
+						<span className="tracking-wide">Beta Preview</span>
 					</div>
-					<h1 className="text-4xl sm:text-5xl font-bold leading-tight tracking-tight mb-4">Understand Your Medical Documents Easily</h1>
-					<p className="text-base sm:text-lg text-white/90 mb-8">AI‑assisted summaries for prescriptions & health reports—clear, concise, and in your language. Empower patients & caregivers with faster comprehension.</p>
-					<div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-						<Link to="/summarize" className="btn-primary px-6 py-3 text-base font-semibold shadow-sm">Start Summarizing</Link>
-						<Link to="/help" className="btn-secondary px-6 py-3 text-base font-semibold">How it works</Link>
+					<h1 className="text-4xl sm:text-6xl font-extrabold leading-[1.05] tracking-tight mb-8 text-gray-900">
+						Understand Your Medical Documents <span className="bg-gradient-to-r from-primary-700 to-primary-500 bg-clip-text text-transparent">Easily</span>
+					</h1>
+					<p className="text-base sm:text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
+						AI‑powered summaries that convert prescriptions & lab reports into plain language. Faster clarity for patients and caregivers—right in your browser.
+					</p>
+					<div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+						<Link to="/summarize" className="btn-primary px-9 py-4 text-base sm:text-lg font-semibold">
+							Start Summarizing →
+						</Link>
+						<Link to="/help" className="btn-secondary px-9 py-4 text-base sm:text-lg font-semibold">
+							How it works
+						</Link>
 					</div>
-					<p className="mt-6 text-xs text-white/70">⚠️ Not a substitute for professional medical advice. Always consult a doctor.</p>
+					<p className="mt-10 text-xs sm:text-sm text-gray-500 max-w-md mx-auto">
+						⚠️ Not medical advice. Always consult a licensed professional.
+					</p>
 				</div>
 			</section>
 
 			{/* Features Grid */}
-			<section className="stagger-children">
-				<div className="mb-10 text-center max-w-2xl mx-auto">
-					<h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">Why MediHelp?</h2>
-					<p className="text-gray-600">Designed for patients, caregivers, and health support teams who need quick clarity without clinical jargon.</p>
+			<section>
+				<div className="mb-12 text-center max-w-3xl mx-auto">
+					<h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4 gradient-text">Why Choose MediHelp?</h2>
+					<p className="text-gray-600 text-lg">Designed for patients, caregivers, and health support teams who need quick clarity without clinical jargon.</p>
 				</div>
-				<div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+				<div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 					{featureItems.map(({ icon: Icon, title, desc }) => (
 						<article key={title} className="feature-card group flex flex-col select-none" aria-labelledby={`feat-${title.replace(/\s+/g,'-')}`}> 
-							<div className="feature-icon mb-5" aria-hidden="true">
-								<Icon className="h-5 w-5" />
+							<div className="feature-icon mb-6" aria-hidden="true">
+								<Icon className="h-6 w-6" />
 							</div>
-							<h3 id={`feat-${title.replace(/\s+/g,'-')}`} className="font-semibold text-gray-900 mb-2">{title}</h3>
-							<p className="text-gray-600 flex-1">{desc}</p>
-							<span className="feature-learn mt-4 inline-flex items-center gap-1" aria-hidden="true">LEARN<span className="block h-[1px] w-4 bg-current"></span></span>
+							<h3 id={`feat-${title.replace(/\s+/g,'-')}`} className="font-bold text-base text-gray-900 mb-2 tracking-tight">{title}</h3>
+							<p className="text-gray-600 text-[13px] leading-relaxed flex-1">{desc}</p>
+							<span className="mt-4 inline-flex items-center gap-1.5 text-[11px] font-semibold text-brand/70 group-hover:text-brand transition-colors" aria-hidden="true">
+								<span className="translate-x-0 group-hover:translate-x-0.5 transition-transform">Learn more</span>
+								<span className="opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+							</span>
 						</article>
 					))}
 				</div>
 			</section>
 
 			{/* How it Works */}
-			<section className="stagger-children">
-				<div className="mb-10 text-center max-w-2xl mx-auto">
-					<h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">How It Works</h2>
-					<p className="text-gray-600">Three quick steps from upload to understanding.</p>
+			<section>
+				<div className="mb-12 text-center max-w-3xl mx-auto">
+					<h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4 text-gray-900">How It Works</h2>
+					<p className="text-gray-600 text-lg">Three simple steps from document to understanding.</p>
 				</div>
-				<ol className="grid gap-6 md:grid-cols-3">
+				<ol className="grid gap-8 md:grid-cols-3">
 					{steps.map(s => (
-						<li key={s.number} className="relative glass interactive-panel rounded-xl p-6 flex flex-col">
-							<div className="absolute -top-4 left-4 h-8 w-8 rounded-full gradient-brand text-white flex items-center justify-center text-sm font-semibold shadow">{s.number}</div>
-							<h3 className="font-semibold text-gray-900 mb-2 mt-2">{s.title}</h3>
-							<p className="text-sm text-gray-600 leading-relaxed flex-1">{s.text}</p>
+						<li key={s.number} className="rounded-xl border border-gray-200 bg-white p-6 flex flex-col group transition-colors hover:border-gray-300 hover:bg-gray-50">
+							<div className="flex items-center gap-3 mb-4">
+								<div className="h-10 w-10 rounded-lg bg-gray-100 text-gray-800 flex items-center justify-center text-sm font-semibold">
+									{s.number}
+								</div>
+								<h3 className="font-semibold text-[15px] text-gray-900 tracking-tight">{s.title}</h3>
+							</div>
+							<p className="text-[13px] text-gray-600 leading-relaxed flex-1">{s.text}</p>
+							<div className="mt-5 h-0.5 w-10 bg-gray-200 group-hover:w-full transition-all duration-400 group-hover:bg-gray-300"></div>
 						</li>
 					))}
 				</ol>
 			</section>
 
 			{/* Trust / Disclaimer */}
-			<section className="glass rounded-2xl p-8 interactive-panel">
-				<div className="grid md:grid-cols-3 gap-8 items-start">
+			<section className="rounded-2xl border border-gray-200 bg-white p-10 shadow-sm">
+				<div className="grid md:grid-cols-3 gap-10 items-start">
 					<div className="md:col-span-2 space-y-6">
 						<div>
-							<h2 className="text-xl font-semibold mb-2 flex items-center gap-2"><ShieldCheck className="h-5 w-5 text-brand" /> Privacy & Responsibility</h2>
-							<p className="text-sm text-gray-600 leading-relaxed">Your summaries are stored locally in your browser history so you control them. This tool is designed to assist—not diagnose or prescribe. Always follow professional medical guidance.</p>
+							<h2 className="text-2xl font-bold mb-4 flex items-center gap-3">
+								<div className="h-10 w-10 rounded-full bg-brand-fade flex items-center justify-center">
+									<ShieldCheck className="h-6 w-6 text-brand" />
+								</div>
+								Privacy & Responsibility
+							</h2>
+							<p className="text-base text-gray-700 leading-relaxed">Your summaries are stored locally in your browser history so you control them. This tool is designed to assist—not diagnose or prescribe. Always follow professional medical guidance.</p>
 						</div>
-						<div className="flex flex-wrap gap-3 text-xs">
-							<span className="px-3 py-1 rounded-full bg-brand-fade text-brand flex items-center gap-1"><Upload className="h-3 w-3" /> Image / PDF Support</span>
-							<span className="px-3 py-1 rounded-full bg-brand-fade text-brand flex items-center gap-1"><Languages className="h-3 w-3" /> Multi-Language</span>
-							<span className="px-3 py-1 rounded-full bg-brand-fade text-brand flex items-center gap-1"><Sparkles className="h-3 w-3" /> AI Assisted</span>
-							<span className="px-3 py-1 rounded-full bg-brand-fade text-brand flex items-center gap-1"><Clock className="h-3 w-3" /> Fast</span>
+						<div className="flex flex-wrap gap-3">
+							{[
+								{ icon: Upload, label: 'Image / PDF Support' },
+								{ icon: Languages, label: 'Multi-Language' },
+								{ icon: Sparkles, label: 'AI Assisted' },
+								{ icon: Clock, label: 'Lightning Fast' }
+							].map(b => (
+								<span key={b.label} className="px-4 py-2 rounded-full bg-brand-fade text-brand flex items-center gap-2 text-[12px] font-semibold cursor-default shadow-sm border border-brand/15">
+									<b.icon className="h-4 w-4" /> {b.label}
+								</span>
+							))}
 						</div>
 					</div>
 					<div className="space-y-4">
-						<div className="gradient-brand text-white rounded-xl p-5 shadow interactive-panel flex flex-col gap-3">
-							<h3 className="font-semibold text-sm">Quick Start</h3>
-							<ul className="space-y-2 text-xs text-white/90">
-								<li className="flex items-start gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300 mt-0.5" /> Open Summarize page</li>
-								<li className="flex items-start gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300 mt-0.5" /> Upload or enable demo</li>
-								<li className="flex items-start gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300 mt-0.5" /> Wait ~2 seconds</li>
-								<li className="flex items-start gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300 mt-0.5" /> Expand the result</li>
-								<li className="flex items-start gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300 mt-0.5" /> Review & consult doctor</li>
+						<div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm flex flex-col gap-4">
+							<h3 className="font-semibold text-xs tracking-wider text-gray-900">QUICK START GUIDE</h3>
+							<ul className="space-y-2.5 text-[13px] text-gray-700 font-medium">
+								{[
+									'Open Summarize page',
+									'Upload or enable demo',
+									'Wait ~2 seconds',
+									'Expand the result',
+									'Review & consult doctor'
+								].map(item => (
+									<li key={item} className="flex items-start gap-2">
+										<CheckCircle2 className="h-4 w-4 text-emerald-500 mt-0.5 flex-shrink-0" /> {item}
+									</li>
+								))}
 							</ul>
-							<Link to="/summarize" className="btn-secondary bg-white text-brand hover:bg-brand-fade font-semibold text-xs justify-center">Try Now →</Link>
+							<Link to="/summarize" className="btn-primary font-semibold text-sm justify-center mt-1">
+								Try Now →
+							</Link>
 						</div>
 					</div>
 				</div>
 			</section>
 
 			{/* Final CTA */}
-			<section className="text-center py-12">
-				<h2 className="text-2xl sm:text-3xl font-bold mb-3">Ready to Simplify Medical Text?</h2>
-				<p className="text-gray-600 mb-6 text-sm sm:text-base">Get instant summaries that turn complexity into clarity.</p>
-				<div className="flex flex-col sm:flex-row gap-4 justify-center">
-					<Link to="/summarize" className="btn-primary px-6 py-3">Summarize a Document</Link>
-					<Link to="/history" className="btn-secondary px-6 py-3">View Your History</Link>
+			<section className="text-center py-20">
+				<div className="max-w-3xl mx-auto">
+					<h2 className="text-3xl sm:text-4xl font-bold mb-5 text-gray-900">Ready to Simplify Medical Text?</h2>
+					<p className="text-gray-600 mb-10 text-lg sm:text-xl leading-relaxed">Get instant summaries that turn complexity into clarity. Start understanding your health documents today.</p>
+					<div className="flex flex-col sm:flex-row gap-6 justify-center">
+						<Link to="/summarize" className="btn-primary px-10 py-4 text-base font-semibold">
+							Summarize a Document →
+						</Link>
+						<Link to="/history" className="btn-secondary px-10 py-4 text-base font-semibold">
+							View Your History
+						</Link>
+					</div>
 				</div>
 			</section>
 		</div>
