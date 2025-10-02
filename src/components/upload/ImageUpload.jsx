@@ -38,7 +38,7 @@ const ImageUpload = ({ onFileSelect, isProcessing }) => {
   return (
     <div className="w-full">
       <div
-        className={`relative border-3 border-dashed rounded-2xl p-12 text-center transition-all duration-300 ${
+        className={`relative w-full border-3 border-dashed rounded-2xl p-8 sm:p-12 text-center transition-all duration-300 ${
           dragActive
             ? 'border-primary-500 bg-primary-50 shadow-lg scale-[1.02]'
             : 'border-gray-300 hover:border-primary-400 hover:bg-gray-50'
@@ -59,8 +59,8 @@ const ImageUpload = ({ onFileSelect, isProcessing }) => {
           aria-label="Upload prescription or health report"
         />
         
-        <div className="flex flex-col items-center">
-          <div className={`h-20 w-20 rounded-full flex items-center justify-center mb-6 transition-all duration-300 ${
+        <div className="flex flex-col items-center w-full">
+          <div className={`h-20 w-20 rounded-full flex items-center justify-center mb-6 transition-all duration-300 flex-shrink-0 ${
             dragActive 
               ? 'bg-primary-500 scale-110' 
               : selectedFile 
@@ -74,42 +74,42 @@ const ImageUpload = ({ onFileSelect, isProcessing }) => {
             )}
           </div>
           
-          <p className="text-xl font-bold text-gray-900 mb-2">
+          <p className="text-xl font-bold text-gray-900 mb-2 px-2 break-words w-full">
             {selectedFile ? 'File Selected ✓' : 'Upload Prescription Image'}
           </p>
           
           {!selectedFile && (
             <>
-              <p className="text-base text-gray-600 mb-6 max-w-sm">
+              <p className="text-base text-gray-600 mb-6 w-full max-w-sm px-4 break-words">
                 Drag and drop your file here, or{' '}
                 <span className="text-primary-600 font-semibold underline">click to browse</span>
               </p>
-              <div className="flex items-center gap-4 text-sm text-gray-500 bg-white px-4 py-2 rounded-lg border border-gray-200">
-                <div className="flex items-center gap-1">
-                  <Camera className="h-4 w-4" />
+              <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-sm text-gray-500 bg-white px-4 py-2 rounded-lg border border-gray-200">
+                <div className="flex items-center gap-1 whitespace-nowrap">
+                  <Camera className="h-4 w-4 flex-shrink-0" />
                   <span>JPG, PNG</span>
                 </div>
-                <div className="h-4 w-px bg-gray-300"></div>
-                <div className="flex items-center gap-1">
-                  <FileText className="h-4 w-4" />
+                <div className="h-4 w-px bg-gray-300 hidden sm:block"></div>
+                <div className="flex items-center gap-1 whitespace-nowrap">
+                  <FileText className="h-4 w-4 flex-shrink-0" />
                   <span>PDF</span>
                 </div>
-                <div className="h-4 w-px bg-gray-300"></div>
-                <span>Max 5MB</span>
+                <div className="h-4 w-px bg-gray-300 hidden sm:block"></div>
+                <span className="whitespace-nowrap">Max 5MB</span>
               </div>
             </>
           )}
         </div>
 
         {selectedFile && (
-          <div className="mt-6 p-4 bg-white rounded-xl border-2 border-green-300 shadow-sm">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-lg bg-green-100 flex items-center justify-center">
+          <div className="mt-6 p-4 bg-white rounded-xl border-2 border-green-300 shadow-sm w-full">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3 min-w-0 flex-1">
+                <div className="h-10 w-10 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
                   <FileText className="h-5 w-5 text-green-600" />
                 </div>
-                <div className="text-left">
-                  <p className="text-sm font-semibold text-gray-900 truncate max-w-xs">
+                <div className="text-left min-w-0 flex-1">
+                  <p className="text-sm font-semibold text-gray-900 truncate w-full">
                     {selectedFile.name}
                   </p>
                   <p className="text-xs text-gray-500">

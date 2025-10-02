@@ -4,12 +4,13 @@ import { ArrowRight, CheckCircle2, Info, Lightbulb, ShieldCheck, HelpCircle } fr
 
 const Help = () => {
   return (
-    <div className="max-w-5xl mx-auto space-y-10">
-      <header className="glass rounded-3xl p-10 shadow-xl animate-fade-slide relative overflow-hidden">
+    <div className="w-full max-w-5xl mx-auto space-y-10">
+  <header className="glass rounded-3xl p-7 sm:p-10 shadow-xl animate-fade-slide relative overflow-hidden">
         <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_75%_25%,rgba(0,180,216,0.25),transparent_65%)]" />
         <div className="relative z-10">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-4 tracking-tight">
-            <span className="gradient-text flex items-center gap-2"><HelpCircle className="h-7 w-7" /> How to use MediHelp</span>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-4 tracking-tight flex items-center gap-3">
+            <HelpCircle className="h-8 w-8 text-brand app-icon" />
+            <span className="gradient-text">How to use MediHelp</span>
           </h1>
           <p className="text-gray-700 text-lg font-medium leading-relaxed max-w-2xl">Quick guidance to get accurate summaries from prescriptions and health reports.</p>
           <nav aria-label="Page sections" className="mt-6 flex flex-wrap gap-3 text-[12px] font-semibold">
@@ -26,11 +27,12 @@ const Help = () => {
         </div>
       </header>
 
-      <section id="quickstart" className="glass rounded-2xl p-9 shadow-lg scroll-mt-24">
+  <section id="quickstart" className="glass rounded-2xl p-6 sm:p-9 shadow-lg scroll-mt-24">
         <h2 className="text-2xl font-bold mb-7 flex items-center gap-3">
-          <span className="gradient-text flex items-center gap-2"><ArrowRight className="h-5 w-5" /> Quick Start</span>
+          <ArrowRight className="h-6 w-6 text-brand app-icon" />
+          <span className="gradient-text">Quick Start</span>
         </h2>
-        <ol className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+  <ol className="grid gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-4">
           {[
             ['Open the', <>Open the <Link to="/summarize" className="text-brand font-bold underline hover:no-underline">Summarize</Link> page.</>],
             ['Upload', 'Upload a clear image or PDF (max 5MB).'],
@@ -48,9 +50,10 @@ const Help = () => {
         </ol>
       </section>
 
-      <section id="tips" className="glass rounded-2xl p-9 shadow-lg scroll-mt-24">
+  <section id="tips" className="glass rounded-2xl p-6 sm:p-9 shadow-lg scroll-mt-24">
         <h2 className="text-2xl font-bold mb-7 flex items-center gap-3">
-          <span className="gradient-text flex items-center gap-2"><Lightbulb className="h-6 w-6" /> Tips for better results</span>
+          <Lightbulb className="h-7 w-7 text-brand app-icon" />
+          <span className="gradient-text">Tips for better results</span>
         </h2>
         <ul className="space-y-4">
           <li className="flex items-start gap-3 text-gray-700 font-medium">
@@ -76,9 +79,10 @@ const Help = () => {
         </ul>
       </section>
 
-      <section id="troubleshooting" className="glass rounded-2xl p-9 shadow-lg scroll-mt-24">
+  <section id="troubleshooting" className="glass rounded-2xl p-6 sm:p-9 shadow-lg scroll-mt-24">
         <h2 className="text-2xl font-bold mb-7 flex items-center gap-3">
-          <span className="gradient-text flex items-center gap-2"><Info className="h-6 w-6" /> Troubleshooting</span>
+          <Info className="h-7 w-7 text-brand app-icon" />
+          <span className="gradient-text">Troubleshooting</span>
         </h2>
         <dl className="space-y-6">
           <div className="p-5 rounded-xl bg-white/50 hover:bg-white/70 transition-colors">
@@ -102,9 +106,10 @@ const Help = () => {
         </dl>
       </section>
 
-      <section id="faq" className="glass rounded-2xl p-9 shadow-lg scroll-mt-24">
+  <section id="faq" className="glass rounded-2xl p-6 sm:p-9 shadow-lg scroll-mt-24">
         <h2 className="text-2xl font-bold mb-7 flex items-center gap-3">
-          <span className="gradient-text flex items-center gap-2"><HelpCircle className="h-6 w-6" /> FAQ</span>
+          <HelpCircle className="h-7 w-7 text-brand app-icon" />
+          <span className="gradient-text">FAQ</span>
         </h2>
         <div className="space-y-5">
           <details className="group p-5 rounded-xl bg-white/50 hover:bg-white/70 transition-colors cursor-pointer">
@@ -132,9 +137,10 @@ const Help = () => {
         </div>
       </section>
 
-      <section id="privacy" className="glass rounded-2xl p-9 shadow-lg scroll-mt-24">
+  <section id="privacy" className="glass rounded-2xl p-6 sm:p-9 shadow-lg scroll-mt-24">
         <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-          <span className="gradient-text flex items-center gap-2"><ShieldCheck className="h-6 w-6" /> Accessibility & Privacy</span>
+          <ShieldCheck className="h-7 w-7 text-brand app-icon" />
+          <span className="gradient-text">Accessibility & Privacy</span>
         </h2>
         <div className="grid md:grid-cols-3 gap-6 text-[13px] font-medium text-gray-700">
           <div className="bg-white/50 rounded-xl p-5 flex flex-col gap-2">
@@ -152,7 +158,7 @@ const Help = () => {
         </div>
       </section>
 
-      <section className="glass rounded-2xl p-10 shadow-lg text-center">
+  <section className="glass rounded-2xl p-7 sm:p-10 shadow-lg text-center">
         <h2 className="text-2xl font-bold mb-4 gradient-text">Ready to try it?</h2>
         <p className="text-gray-600 mb-8 max-w-xl mx-auto text-sm">Jump into the Summarize page and generate your first clear prescription or report explanation in seconds.</p>
         <div className="flex flex-col sm:flex-row gap-5 justify-center">

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
+import BrandLogo from './BrandLogo';
+import { Home, FileText, History, Info, HelpCircle } from 'lucide-react';
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -9,38 +11,36 @@ const Header = () => {
   const inactive = 'text-gray-700 hover:text-brand hover:bg-brand-fade/80';
 
   const links = [
-    { to: '/', label: 'Home', icon: '🏠' },
-    { to: '/summarize', label: 'Summarize', icon: '✨' },
-    { to: '/history', label: 'History', icon: '📜' },
-    { to: '/about', label: 'About', icon: 'ℹ️' },
-    { to: '/help', label: 'Help', icon: '❓' },
+    { to: '/', label: 'Home', icon: Home },
+    { to: '/summarize', label: 'Summarize', icon: FileText },
+    { to: '/history', label: 'History', icon: History },
+    { to: '/about', label: 'About', icon: Info },
+    { to: '/help', label: 'Help', icon: HelpCircle },
   ];
 
+  const location = useLocation();
   return (
-  <header className="glass-header sticky top-0 z-30 shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <header className="glass-header sticky top-0 z-30 shadow-lg w-full">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-5">
-          <div className="flex items-center gap-6">
-            <h1 className="text-3xl font-bold gradient-text tracking-tight flex items-center gap-2">
-              <span className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white text-xl shadow-lg">
-                🏥
-              </span>
-              MediHelp
-            </h1>
+          <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
+            <BrandLogo />
           </div>
           {/* Desktop nav */}
-          <nav className="hidden md:flex space-x-2" aria-label="Primary">
-            {links.map(l => (
-              <NavLink
-                key={l.to}
-                to={l.to}
-                className={({isActive}) => `${linkBase} ${isActive ? active : inactive} flex items-center gap-2`}
-                aria-current={({ isActive }) => (isActive ? 'page' : undefined)}
-              >
-                <span>{l.icon}</span>
-                {l.label}
-              </NavLink>
-            ))}
+          <nav className="hidden md:flex space-x-2 flex-shrink-0" aria-label="Primary">{links.map(l => {
+              const Icon = l.icon;
+              return (
+                <NavLink
+                  key={l.to}
+                  to={l.to}
+                  className={({isActive}) => `${linkBase} ${isActive ? active : inactive} flex items-center gap-2`}
+                  aria-current={({ isActive }) => (isActive ? 'page' : undefined)}
+                >
+                  <Icon className="h-4 w-4 lucide" />
+                  {l.label}
+                </NavLink>
+              );
+            })}
           </nav>
           {/* Mobile button */}
           <button aria-label="Toggle navigation" onClick={() => setOpen(o=>!o)} className="md:hidden inline-flex items-center justify-center p-3 rounded-lg border-2 border-brand text-brand hover:bg-brand hover:text-white transition-all shadow-sm">
@@ -54,22 +54,28 @@ const Header = () => {
           </button>
         </div>
       </div>
+      {location.pathname === '/' && (
+        <h1 className="visually-hidden">MediHelp - Understand medical documents easily</h1>
+      )}
       {/* Mobile panel */}
       {open && (
         <div className="md:hidden glass border-t border-white/40 shadow-xl" role="dialog" aria-label="Mobile navigation" aria-modal="true">
           <div className="px-4 py-4 space-y-2">
-            {links.map(l => (
-              <NavLink
-                key={l.to}
-                to={l.to}
-                onClick={() => setOpen(false)}
-                className={({isActive}) => `${linkBase} ${isActive ? active : inactive} flex items-center gap-3`}
-                aria-current={({ isActive }) => (isActive ? 'page' : undefined)}
-              >
-                <span className="text-xl">{l.icon}</span>
-                {l.label}
-              </NavLink>
-            ))}
+            {links.map(l => {
+              const Icon = l.icon;
+              return (
+                <NavLink
+                  key={l.to}
+                  to={l.to}
+                  onClick={() => setOpen(false)}
+                  className={({isActive}) => `${linkBase} ${isActive ? active : inactive} flex items-center gap-3`}
+                  aria-current={({ isActive }) => (isActive ? 'page' : undefined)}
+                >
+                  <Icon className="h-5 w-5 lucide" />
+                  {l.label}
+                </NavLink>
+              );
+            })}
           </div>
         </div>
       )}

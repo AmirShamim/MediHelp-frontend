@@ -4,8 +4,8 @@ import { FileText, Globe, Zap, Cpu, Github } from 'lucide-react';
 
 const Feature = ({ Icon, title, desc }) => (
   <div className="glass rounded-2xl p-6 flex items-start gap-4 interactive-panel shadow-md hover:shadow-xl transition-all hover:-translate-y-1">
-    <div className="flex-shrink-0 bg-gradient-to-br from-primary-100 to-primary-50 rounded-2xl p-3 shadow-sm">
-      <Icon className="w-7 h-7 text-brand" />
+    <div className="flex-shrink-0 bg-gradient-to-br from-primary-100 to-primary-50 rounded-2xl p-3 shadow-sm icon-tile-light">
+      <Icon className="w-7 h-7 app-icon" />
     </div>
     <div>
       <h4 className="font-bold mb-2 text-gray-800">{title}</h4>
@@ -16,9 +16,9 @@ const Feature = ({ Icon, title, desc }) => (
 
 const Step = ({ number, title, desc, Icon }) => (
   <div className="flex gap-4 items-start group hover:translate-x-1 transition-transform">
-    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-100 to-primary-50 flex items-center justify-center flex-shrink-0 shadow-sm group-hover:shadow-md transition-shadow">
+  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-100 to-primary-50 flex items-center justify-center flex-shrink-0 shadow-sm group-hover:shadow-md transition-shadow icon-tile-light">
       {Icon ? (
-        <span className="w-6 h-6 inline-block text-brand" aria-hidden>
+  <span className="w-6 h-6 inline-block app-icon" aria-hidden>
           {Icon}
         </span>
       ) : (
@@ -34,11 +34,12 @@ const Step = ({ number, title, desc, Icon }) => (
 
 const About = () => {
   return (
-    <div className="space-y-8">
-      <section className="glass rounded-2xl p-8 flex items-center gap-8 shadow-xl animate-fade-slide">
+    <div className="w-full space-y-8">
+      <section className="glass rounded-2xl p-6 sm:p-8 flex flex-col lg:flex-row items-center gap-6 lg:gap-8 shadow-xl animate-fade-slide">
         <div className="flex-1">
-          <h1 className="text-3xl font-bold mb-3">
-            <span className="gradient-text">ℹ️ About MediHelp</span>
+          <h1 className="text-3xl font-bold mb-3 flex items-center gap-3">
+            <span className="h-9 w-9 rounded-xl bg-gradient-to-br from-primary-600 to-primary-500 flex items-center justify-center text-white text-lg shadow-md">ℹ️</span>
+            <span className="gradient-text">About MediHelp</span>
           </h1>
           <p className="text-gray-700 mt-3 max-w-2xl leading-relaxed font-medium text-lg">
             MediHelp helps patients and caregivers understand prescriptions and lab reports by extracting text (OCR) and generating concise, patient-friendly summaries in multiple languages.
@@ -96,9 +97,10 @@ const About = () => {
         <Feature Icon={Globe} title="Multi-language" desc="Provide summaries in multiple languages for better accessibility." />
       </section>
 
-      <section className="glass rounded-2xl p-8 shadow-lg">
-        <h3 className="text-2xl font-bold mb-6">
-          <span className="gradient-text">🔄 How it works</span>
+  <section className="glass rounded-2xl p-6 sm:p-8 shadow-lg">
+        <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+          <span className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary-600 to-primary-500 flex items-center justify-center text-white text-base shadow-md">🔄</span>
+          <span className="gradient-text">How it works</span>
         </h3>
         <div className="mt-6 space-y-5">
           <Step
@@ -141,9 +143,10 @@ const About = () => {
         </div>
       </section>
 
-      <section className="glass rounded-2xl p-8 shadow-lg">
-        <h3 className="text-2xl font-bold mb-6">
-          <span className="gradient-text">💎 Our values</span>
+  <section className="glass rounded-2xl p-6 sm:p-8 shadow-lg">
+        <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+          <span className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary-600 to-primary-500 flex items-center justify-center text-white text-base shadow-md">💎</span>
+          <span className="gradient-text">Our values</span>
         </h3>
         <ul className="space-y-4">
           <li className="flex items-start gap-3 p-4 rounded-xl bg-white/50 hover:bg-white/70 transition-colors">
@@ -170,7 +173,7 @@ const About = () => {
         </ul>
       </section>
 
-      <section className="glass rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg hover:shadow-xl transition-shadow">
+  <section className="glass rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg hover:shadow-xl transition-shadow">
         <div className="flex-1">
           <h3 className="text-2xl font-bold mb-2">
             <span className="gradient-text">🤝 Get involved</span>
@@ -185,7 +188,7 @@ const About = () => {
         </div>
       </section>
 
-      <div className="glass rounded-2xl p-6 border-2 border-red-200/60 bg-gradient-to-br from-red-50/80 to-orange-50/60 shadow-lg">
+  <div className="glass rounded-2xl p-5 sm:p-6 border-2 border-red-200/60 bg-gradient-to-br from-red-50/80 to-orange-50/60 shadow-lg">
         <div className="flex items-start gap-4">
           <div className="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0 shadow-sm">
             <span className="text-2xl">⚠️</span>

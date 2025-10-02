@@ -1,5 +1,30 @@
 @import "tailwindcss";
 
+/* ==========================
+   OVERFLOW FIX - Critical Base Styles
+   ========================== */
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+html {
+	overflow-x: hidden;
+	width: 100%;
+}
+
+body {
+	overflow-x: hidden;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	min-height: 100vh;
+}
+
+#root {
+	width: 100%;
+	overflow-x: hidden;
+}
+
 :root {
 	/* Primary palette (from provided swatch) */
 	--color-primary-900: #00095A; /* deep navy approximation */
@@ -239,6 +264,33 @@ main { animation: fadeIn .25s ease-in; }
 .feature-learn { font-size: .7rem; font-weight:600; color: var(--color-primary-700); }
 @media (prefers-reduced-motion: reduce){ .feature-card { transition: none; } }
 
+/* Reduced motion: suppress logo / nav heavy shadows */
+@media (prefers-reduced-motion: reduce){
+	.logo-tile, .logo-tile:hover { transition: none; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px){
+	.feature-card { min-height: 0; padding: 1.25rem 1rem 1.5rem; }
+	.feature-icon { width: 48px; height: 48px; }
+}
+
+/* Global icon normalization */
+.app-icon, .feature-icon svg, .feature-card svg, .glass svg, .interactive-panel svg {
+	stroke-width: 1.75;
+	vector-effect: non-scaling-stroke;
+}
+.lucide { stroke: var(--color-primary-700); stroke-width:1.75; }
+.glass .lucide { color: var(--color-primary-700); }
+.btn-primary .lucide { stroke: #fff; color:#fff; }
+.btn-secondary .lucide { stroke: var(--color-primary-700); }
+.app-icon--solid { stroke-width: 0; }
+
+/* Ensure icons inside pale backgrounds keep contrast */
+.icon-tile-light svg { color: var(--color-primary-700); opacity: .9; }
+.icon-tile-light { position: relative; }
+.icon-tile-light::after { content:''; position:absolute; inset:0; border:1px solid rgba(0,0,0,0.04); border-radius:inherit; }
+
 /* Interactive panel reduced motion refinement */
 @media (prefers-reduced-motion: reduce){
 	.interactive-panel:hover { transform: none !important; }
@@ -308,3 +360,53 @@ summary .caret-rotate { transition: transform .3s ease; }
 	transition: transform .3s ease;
 }
 .skip-link:focus { transform: translateY(0); }
+
+/* ================= Responsive Utilities ================= */
+/* Layout padding container - OVERFLOW SAFE */
+.container-pad { 
+	width: 100%; 
+	max-width: 100%;
+	margin-inline: auto; 
+	padding-inline: 1rem;
+	box-sizing: border-box;
+}
+@media (min-width:640px){ .container-pad { padding-inline: 1.5rem; } }
+@media (min-width:1024px){ .container-pad { padding-inline: 2rem; } }
+
+/* Fluid headings */
+.fluid-h1 { font-size: clamp(2rem, 6vw, 3.5rem); line-height:1.08; font-weight:700; }
+.fluid-h2 { font-size: clamp(1.5rem,4.5vw,2.5rem); line-height:1.15; font-weight:600; }
+.fluid-h3 { font-size: clamp(1.25rem,3.5vw,1.75rem); font-weight:600; }
+
+/* Section spacing scale */
+.section { padding-block: clamp(2.5rem,7vw,4.5rem); }
+.section-tight { padding-block: clamp(1.75rem,5vw,3rem); }
+
+/* Card responsive padding helper */
+.card-r { padding:1.1rem 1rem 1.3rem; }
+@media (min-width:640px){ .card-r { padding:1.4rem 1.25rem 1.6rem; } }
+@media (min-width:1024px){ .card-r { padding:1.75rem 1.5rem 2rem; } }
+
+/* Grid helpers */
+.grid-features { display:grid; gap:1.75rem; }
+@media (min-width:640px){ .grid-features { grid-template-columns:repeat(2,minmax(0,1fr)); gap:2rem; } }
+@media (min-width:1024px){ .grid-features { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+
+/* Utility for stacking buttons on very narrow screens */
+@media (max-width:400px){ .stack-xs > * { width:100%; } }
+
+/* Hero adjustments */
+.hero { padding: clamp(3rem, 14vh, 6rem) 0  clamp(2.5rem,10vh,5rem); }
+@media (max-width:480px){ .hero { padding-top:3.25rem; } }
+
+/* Footer responsive tweaks */
+@media (max-width:640px){
+	.footer-stack { flex-direction:column; gap:.75rem; }
+	.footer-warning { padding:1rem 1.1rem; }
+}
+
+/* Form responsiveness for summarize page */
+@media (max-width:640px){
+	.form-inline-break { flex-direction:column; align-items:stretch; }
+	.form-inline-break > * { width:100%; }
+}
